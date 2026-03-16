@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College SMS — API Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════ TOP NAV -->
+  <nav class="topbar">
+    <div class="logo">College <span>SMS</span> API</div>
+    <div class="base-url">Base URL: <b>http://localhost:8080</b>/api</div>
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="searchInput" placeholder="Search endpoints..." oninput="filterEndpoints()" />
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════ FILTER ROW -->
+  <div class="filter-row">
+    <span class="filter-label">Method</span>
+    <button class="filter-btn fb-all active" onclick="setMethodFilter('ALL', this)">All</button>
+    <button class="filter-btn fb-get"    onclick="setMethodFilter('GET', this)">GET</button>
+    <button class="filter-btn fb-post"   onclick="setMethodFilter('POST', this)">POST</button>
+    <button class="filter-btn fb-put"    onclick="setMethodFilter('PUT', this)">PUT</button>
+    <button class="filter-btn fb-patch"  onclick="setMethodFilter('PATCH', this)">PATCH</button>
+    <button class="filter-btn fb-delete" onclick="setMethodFilter('DELETE', this)">DELETE</button>
+    <div class="fb-sep"></div>
+    <span class="filter-label">Role</span>
+    <button class="filter-btn fb-role active" onclick="setRoleFilter('ALL', this)">All Roles</button>
+    <button class="filter-btn fb-public"  onclick="setRoleFilter('PUBLIC', this)">Public</button>
+    <button class="filter-btn fb-admin"   onclick="setRoleFilter('ADMIN', this)">Admin</button>
+    <button class="filter-btn fb-hod"     onclick="setRoleFilter('HOD', this)">HOD</button>
+    <button class="filter-btn fb-staff"   onclick="setRoleFilter('STAFF', this)">Staff</button>
+    <button class="filter-btn fb-student" onclick="setRoleFilter('STUDENT', this)">Student</button>
+  </div>
+
+  <!-- ═══════════════════════════════════ LEGEND -->
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background:var(--public)"></span>Public</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--admin)"></span>Admin</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--hod)"></span>HOD</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--staff)"></span>Staff</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--student)"></span>Student</span>
+  </div>
+
+  <div class="layout">
+
+    <!-- ════════════════════════════════ SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-group">
+        <div class="sidebar-label">Modules</div>
+        <a class="sidebar-link active" onclick="scrollToSection('auth')">🔐 Authentication <span class="sidebar-count">4</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('users')">👤 Users <span class="sidebar-count">3</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('departments')">🏢 Departments <span class="sidebar-count">6</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('staff')">👨‍🏫 Staff <span class="sidebar-count">5</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('students')">🎓 Students <span class="sidebar-count">6</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('courses')">📚 Courses <span class="sidebar-count">5</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('subjects')">📖 Subjects <span class="sidebar-count">5</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('attendance')">📅 Attendance <span class="sidebar-count">6</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('marks')">🏆 Marks <span class="sidebar-count">6</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('assignments')">📋 Assignments <span class="sidebar-count">7</span></a>
+        <a class="sidebar-link" onclick="scrollToSection('notifications')">🔔 Notifications <span class="sidebar-count">5</span></a>
+      </div>
+    </aside>
+
+    <!-- ════════════════════════════════ MAIN -->
+    <main class="main" id="main">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div class="page-title">API Reference</div>
+        <div class="page-subtitle">
+          College Student Management System — Spring Boot 4 · JWT Auth · Base:
+          <code>http://localhost:8080/api</code>
+        </div>
+        <div class="stats-row">
+          <div class="stat-pill"><div class="stat-num">58</div><div class="stat-lbl">Endpoints</div></div>
+          <div class="stat-pill"><div class="stat-num" style="color:var(--post)">22</div><div class="stat-lbl">POST</div></div>
+          <div class="stat-pill"><div class="stat-num" style="color:var(--get)">24</div><div class="stat-lbl">GET</div></div>
+          <div class="stat-pill"><div class="stat-num" style="color:var(--put)">6</div><div class="stat-lbl">PUT</div></div>
+          <div class="stat-pill"><div class="stat-num" style="color:var(--patch)">8</div><div class="stat-lbl">PATCH</div></div>
+          <div class="stat-pill"><div class="stat-num" style="color:var(--delete)">4</div><div class="stat-lbl">DELETE</div></div>
+          <div class="stat-pill"><div class="stat-num" style="color:var(--public)">4</div><div class="stat-lbl">Public</div></div>
+        </div>
+      </div>
+
+      <div id="no-results" class="no-results" style="display:none">No endpoints match your filters.</div>
+
+      <!-- ──────────────────── AUTH -->
+      <section class="section" id="auth">
+        <div class="section-header">
+          <div class="section-icon" style="background:#22d3ee18">🔐</div>
+          <div>
+            <div class="section-title">Authentication</div>
+            <div class="section-desc">Login, register, token refresh</div>
+          </div>
+          <span class="endpoint-count">4 endpoints</span>
+        </div>
+
+        <div class="ep-card" data-method="POST" data-roles="PUBLIC" data-path="/auth/login">
+          <div class="ep-header" onclick="toggleCard(this)">
+            <span class="method-badge m-POST">POST</span>
+            <span class="ep-path">/auth/login</span>
+            <span class="ep-summary">Login &amp; get JWT</span>
+            <div class="roles-inline"><div class="role-dot" style="background:var(--public)" title="Public"></div></div>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="ep-body">
+            <div class="ep-inner">
+              <div>
+                <div class="ep-col-label">Access</div>
+                <div class="roles-full"><span class="role-pill rp-PUBLIC">PUBLIC</span></div>
+                <div class="ep-col-label mt">Description</div>
+                <div class="desc-text">Authenticates credentials and returns a JWT access token + refresh token. No Authorization header needed.</div>
+                <div class="ep-col-label mt">Responses</div>
+                <div class="response-row"><span class="status-code s2xx">200</span><span class="res-desc">Returns accessToken, refreshToken, role, email</span></div>
+                <div class="response-row"><span class="status-code s4xx">401</span><span class="res-desc">Invalid email or password</span></div>
+              </div>
+              <div>
+                <div class="ep-col-label">Request Body</div>
+                <div class="code-block">
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                  <pre><span class="k">{</span>
+  <span class="s">"email"</span>:    <span class="n">"admin@college.edu"</span>,
+  <span class="s">"password"</span>: <span class="n">"Admin@1234"</span>
+<span class="k">}</span></pre>
+                </div>
+                <div class="ep-col-label mt">Response</div>
+                <div class="code-block">
+                  <pre><span class="k">{</span>
+  <span class="s">"accessToken"</span>:  <span class="n">"eyJhbGci..."</span>,
+  <span class="s">"refreshToken"</span>: <span class="n">"eyJhbGci..."</span>,
+  <span class="s">"role"</span>:         <span class="n">"ADMIN"</span>,
+  <span class="s">"email"</span>:        <span class="n">"admin@college.edu"</span>,
+  <span class="s">"firstName"</span>:    <span class="n">"Ravi"</span>
+<span class="k">}</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ep-card" data-method="POST" data-roles="PUBLIC" data-path="/auth/register">
+          <div class="ep-header" onclick="toggleCard(this)">
+            <span class="method-badge m-POST">POST</span>
+            <span class="ep-path">/auth/register</span>
+            <span class="ep-summary">Register new user</span>
+            <div class="roles-inline"><div class="role-dot" style="background:var(--public)"></div></div>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="ep-body">
+            <div class="ep-inner">
+              <div>
+                <div class="ep-col-label">Access</div>
+                <div class="roles-full"><span class="role-pill rp-PUBLIC">PUBLIC</span></div>
+                <div class="ep-col-label mt">Description</div>
+                <div class="desc-text">Creates a new user account. Role must be one of: ADMIN, HOD, STAFF, STUDENT.</div>
+                <div class="ep-col-label mt">Request Fields</div>
+                <table class="params-table">
+                  <tr><th>Field</th><th>Type</th><th></th></tr>
+                  <tr><td class="param-name">firstName</td><td class="param-type">String</td><td><span class="req-badge">req</span></td></tr>
+                  <tr><td class="param-name">lastName</td><td class="param-type">String</td><td><span class="req-badge">req</span></td></tr>
+                  <tr><td class="param-name">email</td><td class="param-type">String</td><td><span class="req-badge">req</span></td></tr>
+                  <tr><td class="param-name">password</td><td class="param-type">String</td><td><span class="req-badge">req</span></td></tr>
+                  <tr><td class="param-name">role</td><td class="param-type">Enum</td><td><span class="req-badge">req</span></td></tr>
+                  <tr><td class="param-name">phone</td><td class="param-type">String</td><td><span class="opt-badge">opt</span></td></tr>
+                </table>
+                <div class="ep-col-label mt">Responses</div>
+                <div class="response-row"><span class="status-code s2xx">201</span><span class="res-desc">User created — returns UserResponse</span></div>
+                <div class="response-row"><span class="status-code s4xx">400</span><span class="res-desc">Validation error (fieldErrors map)</span></div>
+                <div class="response-row"><span class="status-code s4xx">409</span><span class="res-desc">Email already exists</span></div>
+              </div>
+              <div>
+                <div class="ep-col-label">Request Body</div>
+                <div class="code-block">
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                  <pre><span class="k">{</span>
+  <span class="s">"firstName"</span>: <span class="n">"Sneha"</span>,
+  <span class="s">"lastName"</span>:  <span class="n">"Patel"</span>,
+  <span class="s">"email"</span>:     <span class="n">"sneha@college.edu"</span>,
+  <span class="s">"password"</span>:  <span class="n">"Student@99"</span>,
+  <span class="s">"phone"</span>:     <span class="n">"9001122334"</span>,
+  <span class="s">"role"</span>:      <span class="n">"STUDENT"</span>
+<span class="k">}</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ep-card" data-method="POST" data-roles="PUBLIC" data-path="/auth/refresh">
+          <div class="ep-header" onclick="toggleCard(this)">
+            <span class="method-badge m-POST">POST</span>
+            <span class="ep-path">/auth/refresh</span>
+            <span class="ep-summary">Refresh access token</span>
+            <div class="roles-inline"><div class="role-dot" style="background:var(--public)"></div></div>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="ep-body">
+            <div class="ep-inner">
+              <div>
+                <div class="ep-col-label">Access</div>
+                <div class="roles-full"><span class="role-pill rp-PUBLIC">PUBLIC</span></div>
+                <div class="ep-col-label mt">Description</div>
+                <div class="desc-text">Exchange a valid refresh token for a new access token. Refresh tokens expire after 7 days.</div>
+                <div class="ep-col-label mt">Responses</div>
+                <div class="response-row"><span class="status-code s2xx">200</span><span class="res-desc">New accessToken returned</span></div>
+                <div class="response-row"><span class="status-code s4xx">401</span><span class="res-desc">Invalid or expired refresh token</span></div>
+              </div>
+              <div>
+                <div class="ep-col-label">Request Body</div>
+                <div class="code-block">
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                  <pre><span class="k">{</span>
+  <span class="s">"refreshToken"</span>: <span class="n">"eyJhbGci..."</span>
+<span class="k">}</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/auth/me">
+          <div class="ep-header" onclick="toggleCard(this)">
+            <span class="method-badge m-GET">GET</span>
+            <span class="ep-path">/auth/me</span>
+            <span class="ep-summary">Get current user</span>
+            <div class="roles-inline">
+              <div class="role-dot" style="background:var(--admin)"></div>
+              <div class="role-dot" style="background:var(--hod)"></div>
+              <div class="role-dot" style="background:var(--staff)"></div>
+              <div class="role-dot" style="background:var(--student)"></div>
+            </div>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="ep-body">
+            <div class="ep-inner">
+              <div>
+                <div class="ep-col-label">Access</div>
+                <div class="roles-full">
+                  <span class="role-pill rp-ADMIN">ADMIN</span>
+                  <span class="role-pill rp-HOD">HOD</span>
+                  <span class="role-pill rp-STAFF">STAFF</span>
+                  <span class="role-pill rp-STUDENT">STUDENT</span>
+                </div>
+                <div class="ep-col-label mt">Description</div>
+                <div class="desc-text">Returns the currently authenticated user's profile. Requires Authorization: Bearer &lt;token&gt;.</div>
+                <div class="ep-col-label mt">Headers</div>
+                <div class="code-block"><pre>Authorization: Bearer &lt;accessToken&gt;</pre></div>
+              </div>
+              <div>
+                <div class="ep-col-label">Response</div>
+                <div class="code-block">
+                  <pre><span class="k">{</span>
+  <span class="s">"id"</span>: <span class="b">1</span>,
+  <span class="s">"firstName"</span>: <span class="n">"Ravi"</span>,
+  <span class="s">"email"</span>:     <span class="n">"admin@college.edu"</span>,
+  <span class="s">"role"</span>:      <span class="n">"ADMIN"</span>,
+  <span class="s">"isActive"</span>:  <span class="b">true</span>
+<span class="k">}</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ──────────────────── USERS -->
+      <section class="section" id="users">
+        <div class="section-header">
+          <div class="section-icon" style="background:#f8717118">👤</div>
+          <div><div class="section-title">Users</div><div class="section-desc">User profile management</div></div>
+          <span class="endpoint-count">3 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN" data-path="/users">
+          <div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/users</span><span class="ep-summary">List all users</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div>
+          <div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div><div class="ep-col-label mt">Query Params</div><table class="params-table"><tr><th>Param</th><th>Type</th><th></th></tr><tr><td class="param-name">page</td><td class="param-type">int</td><td><span class="opt-badge">opt</span></td></tr><tr><td class="param-name">size</td><td class="param-type">int</td><td><span class="opt-badge">opt</span></td></tr><tr><td class="param-name">role</td><td class="param-type">Enum</td><td><span class="opt-badge">opt</span></td></tr></table></div><div><div class="ep-col-label">Response</div><div class="code-block"><pre><span class="k">{</span> <span class="s">"data"</span>: [...], <span class="s">"total"</span>: <span class="b">42</span> <span class="k">}</span></pre></div></div></div></div>
+        </div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/users/{id}">
+          <div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/users/<span class="path-param">{id}</span></span><span class="ep-summary">Get user by ID</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div><div class="role-dot" style="background:var(--staff)"></div><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div>
+          <div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div>
+        </div>
+        <div class="ep-card" data-method="PUT" data-roles="ADMIN HOD STAFF STUDENT" data-path="/users/{id}">
+          <div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-PUT">PUT</span><span class="ep-path">/users/<span class="path-param">{id}</span></span><span class="ep-summary">Update user profile</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div>
+          <div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div><div class="desc-text mt">Users can update their own profile only. Admin can update any user.</div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span> <span class="s">"firstName"</span>: <span class="n">"Updated"</span>, <span class="s">"phone"</span>: <span class="n">"9999999999"</span> <span class="k">}</span></pre></div></div></div></div>
+        </div>
+      </section>
+
+      <!-- ──────────────────── DEPARTMENTS -->
+      <section class="section" id="departments">
+        <div class="section-header">
+          <div class="section-icon" style="background:#fb923c18">🏢</div>
+          <div><div class="section-title">Departments</div><div class="section-desc">Manage academic departments and HOD assignment</div></div>
+          <span class="endpoint-count">6 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/departments"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/departments</span><span class="ep-summary">List all departments</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div><div class="role-dot" style="background:var(--staff)"></div><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div><div class="desc-text mt">Returns list of all departments with student count and HOD info.</div></div><div><div class="ep-col-label">Response</div><div class="code-block"><pre><span class="k">[{</span> <span class="s">"id"</span>:<span class="b">1</span>, <span class="s">"name"</span>:<span class="n">"CS"</span>, <span class="s">"code"</span>:<span class="n">"CS"</span>, <span class="s">"hodName"</span>:<span class="n">"Priya"</span>, <span class="s">"studentCount"</span>:<span class="b">120</span> <span class="k">}]</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN" data-path="/departments"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/departments</span><span class="ep-summary">Create department</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div><div class="ep-col-label mt">Request Fields</div><table class="params-table"><tr><th>Field</th><th>Type</th><th></th></tr><tr><td class="param-name">name</td><td class="param-type">String</td><td><span class="req-badge">req</span></td></tr><tr><td class="param-name">code</td><td class="param-type">String</td><td><span class="req-badge">req</span></td></tr><tr><td class="param-name">description</td><td class="param-type">String</td><td><span class="opt-badge">opt</span></td></tr></table></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"name"</span>:        <span class="n">"Computer Science"</span>,
+  <span class="s">"code"</span>:        <span class="n">"CS"</span>,
+  <span class="s">"description"</span>: <span class="n">"CS Department"</span>
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/departments/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/departments/<span class="path-param">{id}</span></span><span class="ep-summary">Get department by ID</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="PUT" data-roles="ADMIN" data-path="/departments/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-PUT">PUT</span><span class="ep-path">/departments/<span class="path-param">{id}</span></span><span class="ep-summary">Update department</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span> <span class="s">"name"</span>: <span class="n">"Updated Name"</span> <span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="DELETE" data-roles="ADMIN" data-path="/departments/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-DELETE">DELETE</span><span class="ep-path">/departments/<span class="path-param">{id}</span></span><span class="ep-summary">Delete department</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div><div class="desc-text mt">Returns 204 No Content on success.</div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="PATCH" data-roles="ADMIN" data-path="/departments/{deptId}/assign-hod/{staffId}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-PATCH">PATCH</span><span class="ep-path">/departments/<span class="path-param">{deptId}</span>/assign-hod/<span class="path-param">{staffId}</span></span><span class="ep-summary">Assign HOD to department</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div><div class="desc-text mt">Assigns a staff member as the Head of Department. No request body required — IDs are in the path.</div></div><div></div></div></div></div>
+      </section>
+
+      <!-- ──────────────────── STAFF -->
+      <section class="section" id="staff">
+        <div class="section-header">
+          <div class="section-icon" style="background:#fb923c18">👨‍🏫</div>
+          <div><div class="section-title">Staff</div><div class="section-desc">Staff profile and department management</div></div>
+          <span class="endpoint-count">5 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD" data-path="/staff"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/staff</span><span class="ep-summary">List all staff</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN" data-path="/staff"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/staff</span><span class="ep-summary">Create staff profile</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div><div class="ep-col-label mt">Request Fields</div><table class="params-table"><tr><th>Field</th><th>Type</th><th></th></tr><tr><td class="param-name">userId</td><td class="param-type">Long</td><td><span class="req-badge">req</span></td></tr><tr><td class="param-name">departmentId</td><td class="param-type">Long</td><td><span class="req-badge">req</span></td></tr><tr><td class="param-name">designation</td><td class="param-type">String</td><td><span class="opt-badge">opt</span></td></tr><tr><td class="param-name">qualification</td><td class="param-type">String</td><td><span class="opt-badge">opt</span></td></tr></table></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"userId"</span>:       <span class="b">5</span>,
+  <span class="s">"departmentId"</span>: <span class="b">2</span>,
+  <span class="s">"designation"</span>:  <span class="n">"Asst. Professor"</span>,
+  <span class="s">"qualification"</span>:<span class="n">"M.Tech"</span>
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF" data-path="/staff/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/staff/<span class="path-param">{id}</span></span><span class="ep-summary">Get staff by ID</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD" data-path="/staff/department/{deptId}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/staff/department/<span class="path-param">{deptId}</span></span><span class="ep-summary">Staff by department</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="PUT" data-roles="ADMIN" data-path="/staff/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-PUT">PUT</span><span class="ep-path">/staff/<span class="path-param">{id}</span></span><span class="ep-summary">Update staff profile</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div></div><div></div></div></div></div>
+      </section>
+
+      <!-- ──────────────────── STUDENTS -->
+      <section class="section" id="students">
+        <div class="section-header">
+          <div class="section-icon" style="background:#4ade8018">🎓</div>
+          <div><div class="section-title">Students</div><div class="section-desc">Student profile and enrollment management</div></div>
+          <span class="endpoint-count">6 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF" data-path="/students"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/students</span><span class="ep-summary">List all students</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN HOD" data-path="/students"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/students</span><span class="ep-summary">Create student profile</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span></div><div class="ep-col-label mt">Request Fields</div><table class="params-table"><tr><th>Field</th><th>Type</th><th></th></tr><tr><td class="param-name">userId</td><td class="param-type">Long</td><td><span class="req-badge">req</span></td></tr><tr><td class="param-name">departmentId</td><td class="param-type">Long</td><td><span class="req-badge">req</span></td></tr><tr><td class="param-name">courseId</td><td class="param-type">Long</td><td><span class="req-badge">req</span></td></tr><tr><td class="param-name">semesterId</td><td class="param-type">Long</td><td><span class="req-badge">req</span></td></tr><tr><td class="param-name">rollNumber</td><td class="param-type">String</td><td><span class="req-badge">req</span></td></tr><tr><td class="param-name">gender</td><td class="param-type">Enum</td><td><span class="opt-badge">opt</span></td></tr><tr><td class="param-name">dateOfBirth</td><td class="param-type">Date</td><td><span class="opt-badge">opt</span></td></tr></table></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"userId"</span>:      <span class="b">10</span>,
+  <span class="s">"departmentId"</span>:<span class="b">1</span>,
+  <span class="s">"courseId"</span>:    <span class="b">1</span>,
+  <span class="s">"semesterId"</span>:  <span class="b">3</span>,
+  <span class="s">"rollNumber"</span>:  <span class="n">"CS2024001"</span>,
+  <span class="s">"gender"</span>:      <span class="n">"FEMALE"</span>,
+  <span class="s">"dateOfBirth"</span>: <span class="n">"2003-05-15"</span>
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/students/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/students/<span class="path-param">{id}</span></span><span class="ep-summary">Get student by ID</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF" data-path="/students/department/{deptId}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/students/department/<span class="path-param">{deptId}</span></span><span class="ep-summary">Students by department</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="PUT" data-roles="ADMIN HOD" data-path="/students/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-PUT">PUT</span><span class="ep-path">/students/<span class="path-param">{id}</span></span><span class="ep-summary">Update student</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="DELETE" data-roles="ADMIN" data-path="/students/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-DELETE">DELETE</span><span class="ep-path">/students/<span class="path-param">{id}</span></span><span class="ep-summary">Delete student</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div></div><div></div></div></div></div>
+      </section>
+
+      <!-- ──────────────────── COURSES -->
+      <section class="section" id="courses">
+        <div class="section-header">
+          <div class="section-icon" style="background:#22d3ee18">📚</div>
+          <div><div class="section-title">Courses &amp; Semesters</div><div class="section-desc">Academic course management</div></div>
+          <span class="endpoint-count">5 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/courses"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/courses</span><span class="ep-summary">List all courses</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN" data-path="/courses"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/courses</span><span class="ep-summary">Create course</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"name"</span>:          <span class="n">"B.E. Computer Science"</span>,
+  <span class="s">"code"</span>:          <span class="n">"BE-CS"</span>,
+  <span class="s">"durationYears"</span>: <span class="b">4</span>,
+  <span class="s">"departmentId"</span>:  <span class="b">1</span>
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN" data-path="/courses/{id}/semesters"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/courses/<span class="path-param">{id}</span>/semesters</span><span class="ep-summary">Add semester to course</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span> <span class="s">"name"</span>: <span class="n">"Semester 3"</span>, <span class="s">"number"</span>: <span class="b">3</span> <span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/courses/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/courses/<span class="path-param">{id}</span></span><span class="ep-summary">Get course by ID</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="DELETE" data-roles="ADMIN" data-path="/courses/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-DELETE">DELETE</span><span class="ep-path">/courses/<span class="path-param">{id}</span></span><span class="ep-summary">Delete course</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div></div><div></div></div></div></div>
+      </section>
+
+      <!-- ──────────────────── SUBJECTS -->
+      <section class="section" id="subjects">
+        <div class="section-header">
+          <div class="section-icon" style="background:#a78bfa18">📖</div>
+          <div><div class="section-title">Subjects</div><div class="section-desc">Subject and staff assignment</div></div>
+          <span class="endpoint-count">5 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/subjects"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/subjects</span><span class="ep-summary">List all subjects</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN HOD" data-path="/subjects"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/subjects</span><span class="ep-summary">Create subject</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span></div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"name"</span>:        <span class="n">"Data Structures"</span>,
+  <span class="s">"code"</span>:        <span class="n">"CS301"</span>,
+  <span class="s">"credits"</span>:     <span class="b">4</span>,
+  <span class="s">"semesterId"</span>:  <span class="b">3</span>,
+  <span class="s">"departmentId"</span>:<span class="b">1</span>
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/subjects/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/subjects/<span class="path-param">{id}</span></span><span class="ep-summary">Get subject by ID</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="PATCH" data-roles="ADMIN HOD" data-path="/subjects/{id}/assign-staff/{staffId}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-PATCH">PATCH</span><span class="ep-path">/subjects/<span class="path-param">{id}</span>/assign-staff/<span class="path-param">{staffId}</span></span><span class="ep-summary">Assign staff to subject</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span></div><div class="desc-text mt">Assigns a staff member to teach this subject. No request body needed.</div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="DELETE" data-roles="ADMIN HOD" data-path="/subjects/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-DELETE">DELETE</span><span class="ep-path">/subjects/<span class="path-param">{id}</span></span><span class="ep-summary">Delete subject</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span></div></div><div></div></div></div></div>
+      </section>
+
+      <!-- ──────────────────── ATTENDANCE -->
+      <section class="section" id="attendance">
+        <div class="section-header">
+          <div class="section-icon" style="background:#4ade8018">📅</div>
+          <div><div class="section-title">Attendance</div><div class="section-desc">Session creation and attendance marking</div></div>
+          <span class="endpoint-count">6 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN HOD STAFF" data-path="/attendance/mark"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/attendance/mark</span><span class="ep-summary">Mark attendance</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div><div class="desc-text mt">Marks attendance for multiple students at once. Status values: PRESENT, ABSENT, LATE.</div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"date"</span>:      <span class="n">"2026-03-14"</span>,
+  <span class="s">"subjectId"</span>: <span class="b">3</span>,
+  <span class="s">"records"</span>: [
+    <span class="k">{</span> <span class="s">"studentId"</span>:<span class="b">1</span>, <span class="s">"status"</span>:<span class="n">"PRESENT"</span> <span class="k">}</span>,
+    <span class="k">{</span> <span class="s">"studentId"</span>:<span class="b">2</span>, <span class="s">"status"</span>:<span class="n">"ABSENT"</span>  <span class="k">}</span>,
+    <span class="k">{</span> <span class="s">"studentId"</span>:<span class="b">3</span>, <span class="s">"status"</span>:<span class="n">"LATE"</span>    <span class="k">}</span>
+  ]
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/attendance/student/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/attendance/student/<span class="path-param">{id}</span></span><span class="ep-summary">Get student attendance</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div><div class="role-dot" style="background:var(--staff)"></div><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="STUDENT" data-path="/attendance/my"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/attendance/my</span><span class="ep-summary">My attendance summary</span><div class="roles-inline"><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-STUDENT">STUDENT</span></div><div class="desc-text mt">Returns the authenticated student's attendance grouped by subject with overall percentage.</div></div><div><div class="ep-col-label">Response</div><div class="code-block"><pre><span class="k">{</span>
+  <span class="s">"overallPercentage"</span>: <span class="b">82</span>,
+  <span class="s">"subjectSummary"</span>: [
+    <span class="k">{</span> <span class="s">"subjectName"</span>:<span class="n">"DS"</span>, <span class="s">"present"</span>:<span class="b">22</span>, <span class="s">"total"</span>:<span class="b">26</span> <span class="k">}</span>
+  ],
+  <span class="s">"records"</span>: [...]
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD" data-path="/attendance/department/{deptId}/report"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/attendance/department/<span class="path-param">{deptId}</span>/report</span><span class="ep-summary">Department report</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN HOD STAFF" data-path="/attendance/sessions"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/attendance/sessions</span><span class="ep-summary">Create attendance session</span><div class="roles-inline"><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span> <span class="s">"subjectId"</span>:<span class="b">3</span>, <span class="s">"date"</span>:<span class="n">"2026-03-14"</span>, <span class="s">"topic"</span>:<span class="n">"Linked Lists"</span> <span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF" data-path="/attendance/sessions"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/attendance/sessions</span><span class="ep-summary">List sessions</span><div class="roles-inline"><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div></div></div></div></div>
+      </section>
+
+      <!-- ──────────────────── MARKS -->
+      <section class="section" id="marks">
+        <div class="section-header">
+          <div class="section-icon" style="background:#fb923c18">🏆</div>
+          <div><div class="section-title">Marks &amp; Exams</div><div class="section-desc">Academic results and exam management</div></div>
+          <span class="endpoint-count">6 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN HOD STAFF" data-path="/marks"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/marks</span><span class="ep-summary">Upload marks</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div><div class="desc-text mt">Upload marks for multiple students in a single call.</div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"examName"</span>: <span class="n">"Mid Semester"</span>,
+  <span class="s">"subject"</span>:  <span class="n">"Data Structures"</span>,
+  <span class="s">"marks"</span>: [
+    <span class="k">{</span> <span class="s">"studentId"</span>:<span class="b">1</span>, <span class="s">"marks"</span>:<span class="b">78</span> <span class="k">}</span>,
+    <span class="k">{</span> <span class="s">"studentId"</span>:<span class="b">2</span>, <span class="s">"marks"</span>:<span class="b">65</span> <span class="k">}</span>
+  ]
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="STUDENT" data-path="/marks/my"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/marks/my</span><span class="ep-summary">My marks</span><div class="roles-inline"><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-STUDENT">STUDENT</span></div><div class="desc-text mt">Returns all marks for the authenticated student across all subjects and exams.</div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF" data-path="/marks/student/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/marks/student/<span class="path-param">{id}</span></span><span class="ep-summary">Get marks by student ID</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN HOD STAFF" data-path="/marks/exams"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/marks/exams</span><span class="ep-summary">Create exam</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span> <span class="s">"name"</span>:<span class="n">"Internal 2"</span>, <span class="s">"subjectId"</span>:<span class="b">3</span>, <span class="s">"maxMarks"</span>:<span class="b">50</span>, <span class="s">"examDate"</span>:<span class="n">"2026-04-01"</span> <span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF" data-path="/marks/exams"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/marks/exams</span><span class="ep-summary">List all exams</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD" data-path="/marks/department/{deptId}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/marks/department/<span class="path-param">{deptId}</span></span><span class="ep-summary">Department marks summary</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span></div></div><div></div></div></div></div>
+      </section>
+
+      <!-- ──────────────────── ASSIGNMENTS -->
+      <section class="section" id="assignments">
+        <div class="section-header">
+          <div class="section-icon" style="background:#a78bfa18">📋</div>
+          <div><div class="section-title">Assignments</div><div class="section-desc">Create, submit and grade assignments</div></div>
+          <span class="endpoint-count">7 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/assignments"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/assignments</span><span class="ep-summary">List all assignments</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div><div class="role-dot" style="background:var(--staff)"></div><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN HOD STAFF" data-path="/assignments"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/assignments</span><span class="ep-summary">Create assignment</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"title"</span>:       <span class="n">"Sorting Algorithms"</span>,
+  <span class="s">"description"</span>: <span class="n">"Implement and compare"</span>,
+  <span class="s">"dueDate"</span>:     <span class="n">"2026-03-25"</span>,
+  <span class="s">"maxMarks"</span>:    <span class="b">100</span>,
+  <span class="s">"subjectId"</span>:   <span class="b">3</span>
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="STUDENT" data-path="/assignments/my"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/assignments/my</span><span class="ep-summary">My assignments</span><div class="roles-inline"><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-STUDENT">STUDENT</span></div><div class="desc-text mt">Returns all assignments for the student's department/semester with submission status.</div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="POST" data-roles="STUDENT" data-path="/assignments/submit"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/assignments/submit</span><span class="ep-summary">Submit assignment</span><div class="roles-inline"><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"assignmentId"</span>:   <span class="b">4</span>,
+  <span class="s">"submissionText"</span>: <span class="n">"My solution..."</span>,
+  <span class="s">"fileUrl"</span>:        <span class="n">"https://..."</span>
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="PATCH" data-roles="ADMIN HOD STAFF" data-path="/assignments/submissions/{id}/grade"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-PATCH">PATCH</span><span class="ep-path">/assignments/submissions/<span class="path-param">{id}</span>/grade</span><span class="ep-summary">Grade submission</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"grade"</span>:    <span class="n">"A+"</span>,
+  <span class="s">"marks"</span>:    <span class="b">88</span>,
+  <span class="s">"feedback"</span>: <span class="n">"Excellent work!"</span>
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/assignments/{id}"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/assignments/<span class="path-param">{id}</span></span><span class="ep-summary">Get assignment by ID</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF" data-path="/assignments/{id}/submissions"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/assignments/<span class="path-param">{id}</span>/submissions</span><span class="ep-summary">List submissions</span><div class="roles-inline"><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div></div><div></div></div></div></div>
+      </section>
+
+      <!-- ──────────────────── NOTIFICATIONS -->
+      <section class="section" id="notifications">
+        <div class="section-header">
+          <div class="section-icon" style="background:#22d3ee18">🔔</div>
+          <div><div class="section-title">Notifications</div><div class="section-desc">Send and receive system notifications</div></div>
+          <span class="endpoint-count">5 endpoints</span>
+        </div>
+        <div class="ep-card" data-method="POST" data-roles="ADMIN HOD STAFF" data-path="/notifications/send"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-POST">POST</span><span class="ep-path">/notifications/send</span><span class="ep-summary">Send notification</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div><div class="role-dot" style="background:var(--staff)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span></div><div class="desc-text mt">targetRole: ALL, ADMIN, HOD, STAFF, or STUDENT.</div></div><div><div class="ep-col-label">Request Body</div><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><span class="k">{</span>
+  <span class="s">"title"</span>:      <span class="n">"Exam Rescheduled"</span>,
+  <span class="s">"message"</span>:    <span class="n">"Mid-term moved to March 22"</span>,
+  <span class="s">"targetRole"</span>: <span class="n">"STUDENT"</span>
+<span class="k">}</span></pre></div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN HOD STAFF STUDENT" data-path="/notifications/my"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/notifications/my</span><span class="ep-summary">My notifications</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--hod)"></div><div class="role-dot" style="background:var(--staff)"></div><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div><div class="desc-text mt">Returns all notifications sent to the authenticated user, ordered by newest first.</div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="PATCH" data-roles="ADMIN HOD STAFF STUDENT" data-path="/notifications/{id}/read"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-PATCH">PATCH</span><span class="ep-path">/notifications/<span class="path-param">{id}</span>/read</span><span class="ep-summary">Mark single as read</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div><div class="desc-text mt">No request body needed. Returns updated notification.</div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="PATCH" data-roles="ADMIN HOD STAFF STUDENT" data-path="/notifications/read-all"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-PATCH">PATCH</span><span class="ep-path">/notifications/read-all</span><span class="ep-summary">Mark all as read</span><div class="roles-inline"><div class="role-dot" style="background:var(--student)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span><span class="role-pill rp-HOD">HOD</span><span class="role-pill rp-STAFF">STAFF</span><span class="role-pill rp-STUDENT">STUDENT</span></div></div><div></div></div></div></div>
+        <div class="ep-card" data-method="GET" data-roles="ADMIN" data-path="/notifications"><div class="ep-header" onclick="toggleCard(this)"><span class="method-badge m-GET">GET</span><span class="ep-path">/notifications</span><span class="ep-summary">All notifications (admin)</span><div class="roles-inline"><div class="role-dot" style="background:var(--admin)"></div></div><span class="chevron">▶</span></div><div class="ep-body"><div class="ep-inner"><div><div class="ep-col-label">Access</div><div class="roles-full"><span class="role-pill rp-ADMIN">ADMIN</span></div><div class="desc-text mt">Admin-only view of all notifications sent in the system.</div></div><div></div></div></div></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
